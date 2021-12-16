@@ -24,7 +24,7 @@ public class EvenNumbersIteratorTest {
         assertThat(it.next(), is(4));
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(6));
-//        assertThat(it.hasNext(), is(false));
+        assertThat(it.hasNext(), is(false));
         it.next();
     }
 
