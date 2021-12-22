@@ -53,6 +53,7 @@ public class SimpleArrayListTest {
         list.remove(1);
         Assert.assertEquals(Integer.valueOf(1), list.get(0));
         Assert.assertEquals(Integer.valueOf(3), list.get(1));
+        System.out.println(list.get(2));
     }
 
     @Test
@@ -67,7 +68,7 @@ public class SimpleArrayListTest {
 
     @Test
     public void whenSetThenGetOldValueAndSizeNotChanged() {
-        Assert.assertEquals(Integer.valueOf(2), list.set(1, 22));
+        Assert.assertEquals(Integer.valueOf(2), list.set(1, 2));
         Assert.assertEquals(3, list.size());
     }
 
