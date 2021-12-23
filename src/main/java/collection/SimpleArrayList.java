@@ -13,9 +13,7 @@ public class SimpleArrayList<T> implements List<T> {
 
     private void checkSize() {
             if (container.length == size) {
-            Object[] newArr = new Object[container.length * 2 + 1];
-            System.arraycopy(container, 0, newArr, 0, size);
-            container = (T[]) newArr;
+                container = Arrays.copyOf(container, container.length * 2 + 1);
         }
     }
 
