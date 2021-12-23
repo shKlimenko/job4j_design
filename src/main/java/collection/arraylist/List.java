@@ -1,4 +1,4 @@
-package collection;
+package collection.arraylist;
 
 public interface List<T> extends Iterable<T> {
     void add(T value);

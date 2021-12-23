@@ -1,5 +1,7 @@
 package collection;
 
+import collection.arraylist.List;
+import collection.arraylist.SimpleArrayList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
