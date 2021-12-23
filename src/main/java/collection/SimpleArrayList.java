@@ -11,13 +11,18 @@ public class SimpleArrayList<T> implements List<T> {
         this.container = (T[]) new Object[capacity];
     }
 
-    @Override
-    public void add(T value) {
-        if (container.length == size) {
-            Object[] newArr = new Object[container.length * 2];
+    public void chekSize() {
+    int capacityForNewArray = size == 0 ? 10 : container.length * 2;
+            if (container.length == size) {
+            Object[] newArr = new Object[capacityForNewArray];
             System.arraycopy(container, 0, newArr, 0, size);
             container = (T[]) newArr;
         }
+    }
+
+    @Override
+    public void add(T value) {
+        chekSize();
         this.container[size] = value;
         size++;
         modCount++;
@@ -25,15 +30,15 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T newValue) {
-        if (index < 0 || index > container.length) {
-            throw new IndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
+        T beforeSet = container[index];
         container[index] = newValue;
-        return container[index];
+        return beforeSet;
     }
 
     @Override
     public T remove(int index) {
+        Objects.checkIndex(index, size);
         T removed = container[index];
         System.arraycopy(container, index + 1, container, index, size - index - 1);
         container[size - 1] = null;
@@ -44,6 +49,7 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
+        Objects.checkIndex(index, size);
         return container[index];
     }
 
@@ -60,6 +66,9 @@ public class SimpleArrayList<T> implements List<T> {
 
             @Override
             public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
                 return point < size;
             }
 
@@ -67,9 +76,6 @@ public class SimpleArrayList<T> implements List<T> {
             public T next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                }
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
                 }
                 return container[point++];
             }
