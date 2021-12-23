@@ -11,10 +11,9 @@ public class SimpleArrayList<T> implements List<T> {
         this.container = (T[]) new Object[capacity];
     }
 
-    public void chekSize() {
-    int capacityForNewArray = size == 0 ? 10 : container.length * 2;
+    private void checkSize() {
             if (container.length == size) {
-            Object[] newArr = new Object[capacityForNewArray];
+            Object[] newArr = new Object[container.length * 2 + 1];
             System.arraycopy(container, 0, newArr, 0, size);
             container = (T[]) newArr;
         }
@@ -22,7 +21,7 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public void add(T value) {
-        chekSize();
+        checkSize();
         this.container[size] = value;
         size++;
         modCount++;
@@ -30,16 +29,14 @@ public class SimpleArrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T newValue) {
-        Objects.checkIndex(index, size);
-        T beforeSet = container[index];
+        T beforeSet = get(index);
         container[index] = newValue;
         return beforeSet;
     }
 
     @Override
     public T remove(int index) {
-        Objects.checkIndex(index, size);
-        T removed = container[index];
+        T removed = get(index);
         System.arraycopy(container, index + 1, container, index, size - index - 1);
         container[size - 1] = null;
         size--;
