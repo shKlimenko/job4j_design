@@ -1,4 +1,4 @@
-package collection;
+package collection.arraylist;
 
 import collection.arraylist.List;
 import collection.arraylist.SimpleArrayList;

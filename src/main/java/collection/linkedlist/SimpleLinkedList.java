@@ -1,22 +1,82 @@
 package collection.linkedlist;
 
-import collection.linkedlist.List;
-
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleLinkedList<E> implements List<E> {
+    private static class Node<E> {
+        E item;
+        Node<E> next;
+        Node<E> prev;
+
+        Node(Node<E> prev, E element, Node<E> next) {
+            this.item = element;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+
+    transient int size;
+    transient int modCount;
+    transient Node<E> first;
+    transient Node<E> last;
+
     @Override
     public void add(E value) {
-
+        final Node<E> l = last;
+        final Node<E> newNode = new Node<>(l, value, null);
+        last = newNode;
+        if (l == null) {
+            first = newNode;
+        } else {
+            l.next = newNode;
+        }
+        size++;
+        modCount++;
     }
 
     @Override
     public E get(int index) {
-        return null;
+        Objects.checkIndex(index, size);
+        if (index < (size >> 1)) {
+            Node<E> x = first;
+            for (int i = 0; i < index; i++) {
+                x = x.next;
+            }
+            return x.item;
+        } else {
+            Node<E> x = last;
+            for (int i = size - 1; i > index; i--) {
+                x = x.prev;
+            }
+            return x.item;
+        }
     }
 
     @Override
     public Iterator<E> iterator() {
-        return null;
+        return new Iterator<E>() {
+            int point;
+            int expectedModCount = modCount;
+
+            @Override
+            public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                return index < size;
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return first.item;
+            }
+
+        };
     }
 }
