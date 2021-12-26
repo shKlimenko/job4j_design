@@ -43,5 +43,6 @@ public class ForwardLinkedTest {
         linked.addFirst(4);
         linked.addFirst(5);
         assertThat(linked.deleteFirst(), is(5));
+        assertThat(linked.deleteFirst(), is(4));
     }
 }
