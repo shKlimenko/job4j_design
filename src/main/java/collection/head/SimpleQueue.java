@@ -1,13 +1,16 @@
 package collection.head;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
 
     public T poll() {
-        if (out.getSize() == 0) {
+        if (in.getSize() == 0 && out.getSize() == 0) {
+            throw new NoSuchElementException();
+        } else if (out.getSize() == 0) {
             int i = in.getSize();
             while (i > 0) {
                 out.push(in.pop());
