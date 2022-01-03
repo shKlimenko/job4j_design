@@ -46,12 +46,16 @@ public class ListUtils {
             if (filter.test(iterator.next())) {
                 iterator.set(value);
             }
-            iterator.next();
         }
     }
 
     public static <T> void removeAll(List<T> list, List<T> elements) {
-
+        ListIterator<T> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            if (elements.contains(iterator.next())) {
+                iterator.remove();
+            }
+        }
     }
 
 }

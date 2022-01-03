@@ -1,11 +1,13 @@
 package ru.job4j.it;
 
 import static org.hamcrest.Matchers.is;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertThat;
 
@@ -28,5 +30,55 @@ public class ListUtilsTest {
         List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2));
         ListUtils.addAfter(input, 2, 3);
         assertThat(input, is(Arrays.asList(0, 1, 2, 3)));
+    }
+
+    @Test
+    public void whenRemoveAfter() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
+        ListUtils.removeIf(input, x -> x > 2);
+        assertThat(input, is(Arrays.asList(0, 1, 2)));
+    }
+
+    @Test
+    public void whenRemoveBefore() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5));
+        ListUtils.removeIf(input, x -> x < 4);
+        assertThat(input, is(Arrays.asList(4, 5)));
+    }
+
+    @Test
+    public void whenReplaceOneInTheMiddle() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        ListUtils.replaceIf(input, x -> x == 2, 777);
+        assertThat(input, is(Arrays.asList(0, 1, 777, 3, 4)));
+    }
+
+    @Test
+    public void whenNothingReplaced() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        ListUtils.replaceIf(input, x -> x == 555, 777);
+        assertThat(input, is(Arrays.asList(0, 1, 2, 3, 4)));
+    }
+
+    @Test
+    public void whenReplaceFromZeroToMiddle() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        ListUtils.replaceIf(input, x -> x < 3, 777);
+        assertThat(input, is(Arrays.asList(777, 777, 777, 3, 4)));
+    }
+
+    @Test
+    public void whenReplaceInMiddle() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        ListUtils.replaceIf(input, x -> x == 2, 777);
+        assertThat(input, is(Arrays.asList(0, 1, 777, 3, 4)));
+    }
+
+    @Test
+    public void whenRemoveAll() {
+        List<Integer> input = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4));
+        List<Integer> badElements = new ArrayList<>(Arrays.asList(1, 3));
+        ListUtils.removeAll(input, badElements);
+        assertThat(input, is(Arrays.asList(0, 2, 4)));
     }
 }
