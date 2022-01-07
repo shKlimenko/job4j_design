@@ -2,6 +2,7 @@ package map;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Calendar;
 
 public class User {
     private String name;
@@ -15,7 +16,7 @@ public class User {
     }
 
     public static void main(String[] args) {
-        Calendar calendar = new Calendar();
+        Calendar calendar = Calendar.getInstance();
         User firstUser = new User("First", 2, calendar);
         User secondUser = new User("Second", 5, calendar);
 
