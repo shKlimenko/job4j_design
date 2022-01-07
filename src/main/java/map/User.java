@@ -1,8 +1,6 @@
 package map;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Calendar;
+import java.util.*;
 
 public class User {
     private String name;
@@ -16,15 +14,20 @@ public class User {
     }
 
     public static void main(String[] args) {
-        Calendar calendar = Calendar.getInstance();
-        User firstUser = new User("First", 2, calendar);
-        User secondUser = new User("Second", 5, calendar);
+        Calendar birthDay = new GregorianCalendar(1984, 9, 20, 18, 30, 0);
+        User firstUser = new User("First", 2, birthDay);
+        User secondUser = new User("First", 2, birthDay);
 
         Map<User, Object> map = new HashMap<>();
         map.put(firstUser, new Object());
         map.put(secondUser, new Object());
 
         System.out.println(map);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, children, birthday);
     }
 
     @Override
