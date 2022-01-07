@@ -14,7 +14,7 @@ public class User {
     }
 
     public static void main(String[] args) {
-        Calendar birthDay = new GregorianCalendar(1984, 9, 20, 18, 30, 0);
+        Calendar birthDay = new GregorianCalendar(1984, Calendar.OCTOBER, 20, 18, 30, 0);
         User firstUser = new User("First", 2, birthDay);
         User secondUser = new User("First", 2, birthDay);
 
@@ -23,6 +23,18 @@ public class User {
         map.put(secondUser, new Object());
 
         System.out.println(map);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return children == user.children && Objects.equals(name, user.name) && Objects.equals(birthday, user.birthday);
     }
 
     @Override
