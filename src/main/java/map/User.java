@@ -18,11 +18,18 @@ public class User {
         User firstUser = new User("First", 2, birthDay);
         User secondUser = new User("First", 2, birthDay);
 
-        Map<User, Object> map = new HashMap<>();
+        HashMap<User, Object> map = new HashMap<User, Object>();
         map.put(firstUser, new Object());
         map.put(secondUser, new Object());
 
         System.out.println(map);
+
+        User s1 = null;
+        User s2 = null;
+
+        System.out.println(s1.hashCode());
+        System.out.println(s2.hashCode());
+        System.out.println(s1.equals(s2));
     }
 
     @Override
