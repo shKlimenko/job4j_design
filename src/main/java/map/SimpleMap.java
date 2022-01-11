@@ -1,6 +1,8 @@
 package map;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -19,7 +21,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         int index = indexFor(hash(key.hashCode()));
         boolean rsl = table[index] == null;
         if (rsl) {
-            table[index] = new MapEntry(key, value);
+            table[index] = new MapEntry<K, V>(key, value);
             count++;
             modCount++;
         }
@@ -66,10 +68,31 @@ public class SimpleMap<K, V> implements Map<K, V> {
         return rsl;
     }
 
-    //TODO дописать итератор и тесты
     @Override
     public Iterator<K> iterator() {
-        return null;
+        return new Iterator<K>() {
+            int expectedModCount = modCount;
+            int current = 0;
+
+            @Override
+            public boolean hasNext() {
+                if (expectedModCount != modCount) {
+                    throw new ConcurrentModificationException();
+                }
+                return current < table.length;
+            }
+
+            @Override
+            public K next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                while (table[current] == null) {
+                    current++;
+                }
+                return table[current++].key;
+            }
+        };
     }
 
     private static class MapEntry<K, V> {
