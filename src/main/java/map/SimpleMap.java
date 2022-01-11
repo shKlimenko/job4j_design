@@ -3,6 +3,7 @@ package map;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -18,15 +19,15 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public boolean put(K key, V value) {
+        if (count >= capacity * LOAD_FACTOR) {
+            expand();
+        }
         int index = indexFor(hash(key.hashCode()));
         boolean rsl = table[index] == null;
         if (rsl) {
             table[index] = new MapEntry<K, V>(key, value);
             count++;
             modCount++;
-        }
-        if (rsl && count >= capacity * LOAD_FACTOR) {
-            expand();
         }
         return rsl;
     }
@@ -53,15 +54,19 @@ public class SimpleMap<K, V> implements Map<K, V> {
 
     @Override
     public V get(K key) {
-        MapEntry<K, V> element = table[indexFor(hash(key.hashCode()))];
-        return element == null ? null : element.value;
+        V rsl = null;
+        MapEntry<K, V> cell = table[indexFor(hash(key.hashCode()))];
+        if (key != null && cell != null && cell.key.equals(key)) {
+            rsl = cell.value;
+        }
+        return rsl;
     }
 
     @Override
     public boolean remove(K key) {
-        boolean rsl = table[hash(key.hashCode())] != null;
-        if (rsl) {
-            table[hash(key.hashCode())] = null;
+        boolean rsl = table[indexFor(hash(key.hashCode()))] != null;
+        if (rsl && table[indexFor(hash(key.hashCode()))].key.equals(key)) {
+            table[indexFor(hash(key.hashCode()))] = null;
             count--;
             modCount++;
         }
