@@ -1,9 +1,6 @@
 package map;
 
-import java.util.ConcurrentModificationException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 public class SimpleMap<K, V> implements Map<K, V> {
 
@@ -56,7 +53,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         V rsl = null;
         MapEntry<K, V> cell = table[indexFor(hash(key.hashCode()))];
-        if (key != null && cell != null && cell.key.equals(key)) {
+        if (cell != null && Objects.equals(cell.key, key)) {
             rsl = cell.value;
         }
         return rsl;
