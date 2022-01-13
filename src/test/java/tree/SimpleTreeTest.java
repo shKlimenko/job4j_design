@@ -41,4 +41,9 @@ public class SimpleTreeTest {
         assertFalse(tree.add(2, 6));
     }
 
+    @Test
+    public void whenChildExistButParentIsAbsent() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        assertFalse(tree.add(2, 6));
+    }
 }
