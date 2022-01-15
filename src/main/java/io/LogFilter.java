@@ -13,7 +13,7 @@ public class LogFilter {
             String line;
             while ((line = log.readLine()) != null) {
                 String[] splittedLine = line.split(" ");
-                if (Objects.equals(Integer.parseInt(splittedLine[splittedLine.length - 2]), 404)) {
+                if (Objects.equals(splittedLine[splittedLine.length - 2], "404")) {
                     list.add(line);
                 }
             }
