@@ -25,7 +25,7 @@ public class LogFilter {
 
     public static void save(List<String> log, String file) {
         Iterator<String> logIter = log.listIterator();
-        try(PrintWriter out = new PrintWriter(
+        try (PrintWriter out = new PrintWriter(
                 new BufferedOutputStream(
                         new FileOutputStream(file)
                 ))) {
