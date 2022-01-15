@@ -1,13 +1,10 @@
 package io;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class LogFilter {
     public static List<String> filter(String file) {
@@ -26,8 +23,22 @@ public class LogFilter {
         return list;
     }
 
+    public static void save(List<String> log, String file) {
+        Iterator<String> logIter = log.listIterator();
+        try(PrintWriter out = new PrintWriter(
+                new BufferedOutputStream(
+                        new FileOutputStream(file)
+                ))) {
+            while (logIter.hasNext()) {
+                out.println(logIter.next());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         List<String> log = filter("log.txt");
-        System.out.println(log);
+        save(log, "404.txt");
     }
 }
