@@ -17,10 +17,12 @@ public class Config {
     }
 
     public void load() {
-        StringJoiner out = new StringJoiner(System.lineSeparator());
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             String line;
             while ((line = read.readLine()) != null) {
+                if (line.matches("-+.*") || line.matches("=+.*")) {
+                    throw new IllegalArgumentException();
+                }
                 String[] splittedLine = line.split("=");
                 if (splittedLine.length == 2 && !splittedLine[0].startsWith("#")) {
                     this.values.put(splittedLine[0], splittedLine[1]);

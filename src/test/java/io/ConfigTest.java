@@ -2,6 +2,9 @@ package io;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
+
+import java.util.NoSuchElementException;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -24,5 +27,19 @@ public class ConfigTest {
         config.load();
         assertThat(config.value("programm.language"), is("java"));
         assertThat(config.value("# second"), is(Matchers.nullValue()));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidHyphen() {
+        String path = "./data/pair_with_hyphen.properties";
+        Config config = new Config(path);
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenInvalidEquals() {
+        String path = "./data/pair_with_equals.properties";
+        Config config = new Config(path);
+        config.load();
     }
 }
