@@ -20,7 +20,9 @@ public class ConfigTest {
     public void whenPairWithoutComment() throws IOException {
         File source = folder.newFile("source.txt");
         try (PrintWriter out = new PrintWriter(source)) {
-            out.println("name=Alexey\nage=37\nhobby=travelling");
+            out.println("name=Alexey\n"
+                    + "age=37\n"
+                    + "hobby=travelling");
         }
         Config config = new Config(source.getAbsolutePath());
         config.load();
@@ -33,9 +35,16 @@ public class ConfigTest {
     public void whenPairWithCommentsAndSpacelines() throws IOException {
         File source = folder.newFile("source.txt");
         try (PrintWriter out = new PrintWriter(source)) {
-            out.println("# this is first comment\nname=Alexey\nage=37\nhobby=travelling\n"
-                    + "\n# second=comment\nprogramm.language=java\nyears.learning=0.6\nbday==20.10\n"
-                    + "\n#third = comment\nhouse=of.the.rising.sun\nold.town=road");
+            out.println("# this is first comment\n"
+                    + "name=Alexey\n"
+                    + "age=37\n"
+                    + "hobby=travelling\n"
+                    + "\n"
+                    + "# second=comment\n"
+                    + "programm.language=java\n"
+                    + "years.learning=0.6\n"
+                    + "bday==20.10\n"
+                    + "\n");
         }
         Config config = new Config(source.getAbsolutePath());
         config.load();
