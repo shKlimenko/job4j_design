@@ -20,11 +20,14 @@ public class Config {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             String line;
             while ((line = read.readLine()) != null) {
-                if (line.matches("-+.*") || line.matches("=+.*")) {
-                    throw new IllegalArgumentException();
+                if (line.matches("^=.*") || line.matches(".*=$")) {
+                    throw new IllegalArgumentException("Wrong templates. Please use valid templates!");
+                }
+                if (line.startsWith("#") || line.isEmpty()) {
+                    continue;
                 }
                 String[] splittedLine = line.split("=");
-                if (splittedLine.length == 2 && !splittedLine[0].startsWith("#")) {
+                if (splittedLine.length == 2) {
                     this.values.put(splittedLine[0], splittedLine[1]);
                 }
             }
@@ -34,8 +37,8 @@ public class Config {
     }
 
     public String value(String key) {
-        if (key.isEmpty()) {
-            throw new UnsupportedOperationException("Don't impl this method yet!");
+        if (this.values.get(key) == null) {
+            throw new UnsupportedOperationException("This key is not in the map yet. Please use a valid key!");
         }
         return this.values.get(key);
     }
@@ -54,5 +57,4 @@ public class Config {
     public static void main(String[] args) {
         System.out.println(new Config("app.properties"));
     }
-
 }
