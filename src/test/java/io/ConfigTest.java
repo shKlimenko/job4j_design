@@ -42,7 +42,7 @@ public class ConfigTest {
                     + "# second=comment\n"
                     + "programm.language=java\n"
                     + "years.learning=0.6\n"
-                    + "bday==20.10\n"
+                    + "bday=20.10\n"
                     + "\n");
         }
         Config config = new Config(source.getAbsolutePath());
@@ -58,6 +58,29 @@ public class ConfigTest {
                     + "=name=Alexey\n"
                     + "age=37\n"
                     + "hobby=travelling");
+        }
+        Config config = new Config(source.getAbsolutePath());
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenTwoEqualsInTheMiddleThrowsException() throws IOException {
+        File source = folder.newFile("source.txt");
+        try (PrintWriter out = new PrintWriter(source)) {
+            out.println("age==37");
+        }
+        Config config = new Config(source.getAbsolutePath());
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenLineHasNoKeyThenThrowException() throws IOException {
+        File source = folder.newFile("source.txt");
+        try (PrintWriter out = new PrintWriter(source)) {
+            out.println("# this is first comment\n"
+                    + "name=Alexey\n"
+                    + "age=37\n"
+                    + "=hobby_travelling");
         }
         Config config = new Config(source.getAbsolutePath());
         config.load();

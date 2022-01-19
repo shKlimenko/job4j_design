@@ -20,7 +20,7 @@ public class Config {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             String line;
             while ((line = read.readLine()) != null) {
-                if (line.matches("^=.*") || line.matches(".*=$")) {
+                if (line.matches("^=.*") || line.matches(".*=$") || line.matches(".*={2,}.*")) {
                     throw new IllegalArgumentException("Wrong templates. Please use valid templates!");
                 }
                 if (line.startsWith("#") || line.isEmpty()) {
