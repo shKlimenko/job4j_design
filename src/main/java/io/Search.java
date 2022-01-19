@@ -9,7 +9,16 @@ import java.util.function.Predicate;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get("c:\\projects\\pogoda");
-        Files.walkFileTree(start, new PrintFiles());
+        Path start = Paths.get(".");
+        search(start, p -> p.toFile().getName().endsWith(".csv"))
+                .forEach(el -> System.out.println("File name: " + el.getFileName()
+                        + " - File size: " + el.toFile().length() + " byte"));
     }
+
+    public static List<Path> search(Path root, Predicate<Path> condition) throws IOException {
+        SearchFiles searcher = new SearchFiles(condition);
+        Files.walkFileTree(root, searcher);
+        return searcher.getPaths();
+    }
+
 }
