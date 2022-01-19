@@ -64,6 +64,29 @@ public class ConfigTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
+    public void whenTwoEqualsInTheMiddleThrowsException() throws IOException {
+        File source = folder.newFile("source.txt");
+        try (PrintWriter out = new PrintWriter(source)) {
+            out.println("age==37");
+        }
+        Config config = new Config(source.getAbsolutePath());
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenLineHasNoKeyThenThrowException() throws IOException {
+        File source = folder.newFile("source.txt");
+        try (PrintWriter out = new PrintWriter(source)) {
+            out.println("# this is first comment\n"
+                    + "name=Alexey\n"
+                    + "age=37\n"
+                    + "=hobby_travelling");
+        }
+        Config config = new Config(source.getAbsolutePath());
+        config.load();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
     public void whenEndsWithEquals() throws IOException {
         File source = folder.newFile("source.txt");
         try (PrintWriter out = new PrintWriter(source)) {
