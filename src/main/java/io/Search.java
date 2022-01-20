@@ -9,8 +9,12 @@ import java.util.function.Predicate;
 
 public class Search {
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get(".");
-        search(start, p -> p.toFile().getName().endsWith(".csv"))
+        if (args.length == 0) {
+            throw new IllegalArgumentException("Missing arguments. "
+                    + "Usage java -jar search.jar ROOT_FOLDER FILE_EXTENSION");
+        }
+        Path start = Paths.get(args[0]);
+        search(start, p -> p.toFile().getName().endsWith(args[1]))
                 .forEach(el -> System.out.println("File name: " + el.getFileName()
                         + " - File size: " + el.toFile().length() + " byte"));
     }
@@ -20,5 +24,4 @@ public class Search {
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
     }
-
 }
