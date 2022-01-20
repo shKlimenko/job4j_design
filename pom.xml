@@ -71,10 +71,10 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <finalName>duplicatesFinder</finalName>
+              <finalName>fileSearch</finalName>
               <transformers>
                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>io.duplicates.DuplicatesFinder</mainClass>
+                  <mainClass>io.Search</mainClass>
                 </transformer>
               </transformers>
             </configuration>
