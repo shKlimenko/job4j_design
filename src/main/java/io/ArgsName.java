@@ -16,15 +16,20 @@ public class ArgsName {
 
     private void parse(String[] args) {
         for (String arg : args) {
-            if (!arg.startsWith("-") || arg.matches(".*=$") || arg.matches("^=.*")) {
-                throw new IllegalArgumentException("Wrong templates. Please use valid templates!");
-            }
+            check(arg);
             String[] splittedArg = arg.split("=", 2);
-            if (splittedArg.length == 2) {
-                this.values.put(splittedArg[0].substring(1), splittedArg[1]);
+            String key = splittedArg[0].substring(1);
+            if (splittedArg.length == 2 && !key.isEmpty() && !splittedArg[1].isEmpty()) {
+                this.values.put(key, splittedArg[1]);
             } else {
-                throw new IllegalArgumentException("Something went wrong");
+                throw new IllegalArgumentException("Mismatch pattern");
             }
+        }
+    }
+
+    private void check(String arg) {
+        if (!arg.startsWith("-") && !arg.contains("=")) {
+            throw new IllegalArgumentException("Wrong templates. Please use valid templates!");
         }
     }
 

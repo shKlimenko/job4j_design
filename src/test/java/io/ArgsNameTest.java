@@ -25,6 +25,12 @@ public class ArgsNameTest {
         assertThat(jvm.get("request"), is("?msg=Exit"));
     }
 
+    @Test
+    public void whenMultipleEqualsSymbolInTheEnd() {
+        ArgsName jvm = ArgsName.of(new String[] {"-request=?msg=Exit="});
+        assertThat(jvm.get("request"), is("?msg=Exit="));
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void whenGetNotExist() {
         ArgsName jvm = ArgsName.of(new String[] {});
@@ -34,5 +40,15 @@ public class ArgsNameTest {
     @Test(expected = IllegalArgumentException.class)
     public void whenWrongSomeArgument() {
         ArgsName jvm = ArgsName.of(new String[] {"-enconding=UTF-8", "-Xmx="});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenKeyIsMissing() {
+        ArgsName jvm = ArgsName.of(new String[] {"-enconding=UTF-8", "-=bbjkbjb"});
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void whenEqualsIsMissing() {
+        ArgsName jvm = ArgsName.of(new String[] {"-encondingUTF-8"});
     }
 }
