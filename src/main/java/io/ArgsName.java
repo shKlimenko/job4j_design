@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class ArgsName {
 
-    public final Map<String, String> values = new HashMap<>();
+    private final Map<String, String> values = new HashMap<>();
 
     public String get(String key) {
         if (this.values.get(key) == null) {
