@@ -14,6 +14,9 @@ public class Search {
                     + "Usage java -jar search.jar ROOT_FOLDER FILE_EXTENSION");
         }
         Path start = Paths.get(args[0]);
+        if (!start.toFile().exists() || start.toFile().isFile()) {
+            throw new IllegalArgumentException("ROOT_FOLDER is not exist or not Directory");
+        }
         search(start, p -> p.toFile().getName().endsWith(args[1]))
                 .forEach(el -> System.out.println("File name: " + el.getFileName()
                         + " - File size: " + el.toFile().length() + " byte"));
