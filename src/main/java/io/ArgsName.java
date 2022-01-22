@@ -28,7 +28,7 @@ public class ArgsName {
     }
 
     private void check(String arg) {
-        if (!arg.startsWith("-") && !arg.contains("=")) {
+        if (!arg.startsWith("-") || !arg.contains("=")) {
             throw new IllegalArgumentException("Wrong templates. Please use valid templates!");
         }
     }
