@@ -1,8 +1,7 @@
 package io;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -22,47 +21,44 @@ public class ConsoleChat {
     }
 
     public void run() {
+        String botPhrase;
+        String dialog = CONTINUE;
+        List<String> log = new ArrayList<>();
         System.out.println("Поговорим, кожаный мешок?");
         Scanner sc = new Scanner(System.in);
-        boolean speak = true;
-        //String input = new String();
-        while (sc.hasNext()) {
+        while (!OUT.equals(dialog)) {
             String input = sc.nextLine();
-            if (speak) {
-                System.out.println(readPhrases().get(new Random().nextInt(readPhrases().size())));
-                if ("стоп".equals(input)) {
-                    speak = !speak;
-                }
-
-            } else {
-                if ("продожить".equals(input)) {
-                    speak = !speak;
-                }
+            switch (input) {
+                case OUT:
+                    log.add(input);
+                    dialog = OUT;
+                    break;
+                case STOP:
+                    log.add(input);
+                    dialog = STOP;
+                    break;
+                case CONTINUE:
+                    log.add(CONTINUE);
+                    dialog = CONTINUE;
+                    botPhrase = readPhrases().get(new Random().nextInt(readPhrases().size()));
+                    System.out.println(botPhrase);
+                    log.add(botPhrase);
+                    break;
+                default:
+                    if (CONTINUE.equals(dialog)) {
+                        botPhrase = readPhrases().get(new Random().nextInt(readPhrases().size()));
+                        System.out.println(botPhrase);
+                        log.add(input);
+                        log.add(botPhrase);
+                    } else {
+                        log.add(input);
+                    }
+                    break;
             }
-            if ("закончить".equals(input)) {
-                break;
-            }
-
-
-
-            //String input = sc.nextLine();
-//            if (speak) {
-//                System.out.println(readPhrases().get(new Random().nextInt(readPhrases().size())));
-//                input = sc.nextLine();
-//            }
-//            if ("стоп".equals(input) && speak) {
-//                speak = false;
-//                input = sc.nextLine();
-//            }
-//            if ("продолжить".equals(input)) {
-//                System.out.println(readPhrases().get(new Random().nextInt(readPhrases().size())));
-//                speak = true;
-//                input = sc.nextLine();
-//            }
-//            if ("закончить".equals(input)) {
-//                break;
-//            }
         }
+        saveLog(log);
+
+
 
 
     }
@@ -81,11 +77,17 @@ public class ConsoleChat {
     }
 
     private void saveLog(List<String> log) {
-
+        try (PrintWriter pw = new PrintWriter(
+                new FileWriter(this.path, Charset.forName("WINDOWS-1251"), true)
+        )) {
+            log.forEach(pw::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
-        ConsoleChat cc = new ConsoleChat("cclog.txt", "answers.txt");
+        ConsoleChat cc = new ConsoleChat("data/cclog.txt", "data/answers.txt");
         cc.run();
     }
 }
