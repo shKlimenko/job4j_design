@@ -24,7 +24,7 @@ public class ConsoleChat {
         String botPhrase;
         String dialog = CONTINUE;
         List<String> log = new ArrayList<>();
-        System.out.println("Поговорим, кожаный мешок?");
+        System.out.println("Поговорим на разные темы?");
         Scanner sc = new Scanner(System.in);
         while (!OUT.equals(dialog)) {
             String input = sc.nextLine();
