@@ -9,6 +9,12 @@ public class Contact implements Serializable {
     private final String phone;
     private final String name;
 
+    public Contact(String phone) {
+        this.phone = phone;
+        zipCode = 0;
+        name = "namr";
+    }
+
     public Contact(String name, int zipCode, String phone) {
         this.name = name;
         this.zipCode = zipCode;
