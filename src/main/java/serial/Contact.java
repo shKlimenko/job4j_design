@@ -22,8 +22,8 @@ public class Contact implements Serializable {
 
     public Contact(String phone) {
         this.phone = phone;
-        zipCode = 0;
-        name = "name";
+        zipCode = 355355;
+        name = "default_name";
     }
 
     public Contact(String name, int zipCode, String phone) {
