@@ -1,9 +1,19 @@
 package serial;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "dashboard")
 public class Dashboard {
 
-    private final int buttons;
-    private final boolean analogDisplay;
+    @XmlAttribute
+    private int buttons;
+
+    @XmlAttribute
+    private boolean analogDisplay;
+
+    public Dashboard() {
+    }
 
     public Dashboard(int buttons, boolean analogDisplay) {
         this.buttons = buttons;

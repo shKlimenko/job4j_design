@@ -1,14 +1,26 @@
 package serial;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Arrays;
 
+@XmlRootElement(name = "carmodel")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class CarModel {
 
-    private final boolean isLeftSteeringWheel;
-    private final int wheels;
-    private final String name;
-    private final Dashboard dashboard;
-    private final String[] colors;
+    @XmlAttribute
+    private boolean isLeftSteeringWheel;
+
+    @XmlAttribute
+    private int wheels;
+    private String name;
+    private Dashboard dashboard;
+    private String[] colors;
+
+    public CarModel() {
+    }
 
     public CarModel(boolean isLeftSteeringWheel, int wheels, String name, Dashboard dashboard, String[] colors) {
         this.isLeftSteeringWheel = isLeftSteeringWheel;
