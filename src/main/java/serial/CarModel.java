@@ -30,6 +30,26 @@ public class CarModel {
         this.colors = colors;
     }
 
+    public boolean isLeftSteeringWheel() {
+        return isLeftSteeringWheel;
+    }
+
+    public int getWheels() {
+        return wheels;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Dashboard getDashboard() {
+        return dashboard;
+    }
+
+    public String[] getColors() {
+        return colors;
+    }
+
     @Override
     public String toString() {
         return "CarModel{"
