@@ -1,18 +1,29 @@
 package serial;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.*;
 import java.nio.file.Files;
 
+@XmlRootElement(name = "contact")
 public class Contact implements Serializable {
-    private static final long serialVersionUID = 1L;
-    private final int zipCode;
-    private final String phone;
-    private final String name;
+    private static long serialVersionUID = 1L;
+
+    @XmlAttribute
+    private  int zipCode;
+
+    @XmlAttribute
+    private  String phone;
+    @XmlAttribute
+    private  String name;
+
+    public Contact() {
+    }
 
     public Contact(String phone) {
         this.phone = phone;
         zipCode = 0;
-        name = "namr";
+        name = "name";
     }
 
     public Contact(String name, int zipCode, String phone) {
