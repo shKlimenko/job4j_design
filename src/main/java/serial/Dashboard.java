@@ -20,6 +20,14 @@ public class Dashboard {
         this.analogDisplay = analogDisplay;
     }
 
+    public int getButtons() {
+        return buttons;
+    }
+
+    public boolean isAnalogDisplay() {
+        return analogDisplay;
+    }
+
     @Override
     public String toString() {
         return "Dashboard{"

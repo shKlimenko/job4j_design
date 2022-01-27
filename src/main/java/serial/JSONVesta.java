@@ -24,8 +24,6 @@ public class JSONVesta {
         jsonObject.put("colors", jsonColors);
 
         System.out.println(jsonObject);
-
         System.out.println(new JSONObject(car));
-
     }
 }
