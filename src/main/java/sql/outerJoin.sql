@@ -1,70 +1,63 @@
 create table departments (
-
 	id serial primary key,
-
-    	name varchar(255)
-
+   	name varchar(255)
 );
 
 
 
 create table emploers (
-
 	id serial primary key,
-
-    	name varchar(255),
-
+   	name varchar(255),
 	department_id int references departments(id)
-
 );
 
 
-insert into departments (name) values ('Разработчики'), ('Бухгалтерия'), ('Отдел кадров'), ('Курьеры');
+insert into departments (name) values ('Р Р°Р·СЂР°Р±РѕС‚С‡РёРєРё'), ('Р‘СѓС…РіР°Р»С‚РµСЂРёСЏ'), ('РћС‚РґРµР» РєР°РґСЂРѕРІ'), ('РљСѓСЂСЊРµСЂС‹');
 
-insert into emploers (name, department_id) values ('Загорулько С.К.', 1);
-insert into emploers (name, department_id) values ('Честная Е.И.', 2);
-insert into emploers (name, department_id) values ('Волкодав В.Д.', 3);
-insert into emploers (name, department_id) values ('Неврозов П.С.', null);
-insert into emploers (name, department_id) values ('Нытик З.Г.', null);
-insert into emploers (name, department_id) values ('Каратистов С.П.', 1);
+insert into emploers (name, department_id) values ('Р—Р°РіРѕСЂСѓР»СЊРєРѕ РЎ.Рљ.', 1);
+insert into emploers (name, department_id) values ('Р§РµСЃС‚РЅР°СЏ Р•.Р.', 2);
+insert into emploers (name, department_id) values ('Р’РѕР»РєРѕРґР°РІ Р’.Р”.', 3);
+insert into emploers (name, department_id) values ('РќРµРІСЂРѕР·РѕРІ Рџ.РЎ.', null);
+insert into emploers (name, department_id) values ('РќС‹С‚РёРє Р—.Р“.', null);
+insert into emploers (name, department_id) values ('РљР°СЂР°С‚РёСЃС‚РѕРІ РЎ.Рџ.', 1);
 
 
-/* 1 */
-select * 
+/* 2 */
+select *
 from departments d
 left join emploers  e
 on d.id = e.department_id;
 
-select * 
+select *
 from departments d
 right join emploers  e
 on d.id = e.department_id;
 
-select * 
+select *
 from departments d
 full join emploers  e
 on d.id = e.department_id;
 
-select * 
+select *
 from departments d
 cross join emploers  e;
 
-/* 2 */
-select * 
+/* 3 */
+select *
 from departments d
 left join emploers  e
 on d.id = e.department_id
 where e.id is null;
 
 /* 4 */
-select * 
-from emploers e 
-left join departments d  
+select *
+from emploers e
+left join departments d
 on  e.department_id = d.id;
 
-select * 
-from departments d 
-right join emploers e 
+select e.id, e.name, e.department_id, d.id, d.name
+from departments d
+right join emploers e
 on d.id = e.department_id;
 
 /* 5 */
@@ -74,8 +67,8 @@ create table teens(
 	gender char
 );
 
-insert into teens (name, gender) 
-	values ('Марина', 'f'), ('Дарья', 'f'), ('Николай', 'm'), ('Степан', 'm'), ('Сергей', 'm');
+insert into teens (name, gender)
+	values ('РњР°СЂРёРЅР°', 'f'), ('Р”Р°СЂСЊСЏ', 'f'), ('РќРёРєРѕР»Р°Р№', 'm'), ('РЎС‚РµРїР°РЅ', 'm'), ('РЎРµСЂРіРµР№', 'm');
 
 select t1.name as Person1, t2.name as Person2
 from (select * from teens where gender = 'm') as t1
