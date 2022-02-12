@@ -10,53 +10,48 @@ public class TableEditor implements AutoCloseable {
     private Connection connection;
     private Properties properties;
 
-    private Connection getConnection() throws Exception {
-        Class.forName(this.properties.getProperty("hibernate.connection.driver_class"));
-        String url = this.properties.getProperty("hibernate.connection.url");
-        String login = this.properties.getProperty("hibernate.connection.username");
-        String password = this.properties.getProperty("hibernate.connection.password");
-        return DriverManager.getConnection(url, login, password);
-    }
-
-    public TableEditor(Properties properties) {
+    public TableEditor(Properties properties) throws SQLException, ClassNotFoundException {
         this.properties = properties;
         initConnection();
     }
 
-    private void initConnection() {
-        connection = null;
+    private void initConnection() throws SQLException, ClassNotFoundException {
+        Class.forName(this.properties.getProperty("hibernate.connection.driver_class"));
+        String url = this.properties.getProperty("hibernate.connection.url");
+        String login = this.properties.getProperty("hibernate.connection.username");
+        String password = this.properties.getProperty("hibernate.connection.password");
+        this.connection = DriverManager.getConnection(url, login, password);
     }
 
     public static void main(String[] args) throws Exception {
-        Properties prop = new Properties();
-        prop.load(new FileInputStream("app.properties"));
-        TableEditor tableEditor = new TableEditor(prop);
+        try (FileInputStream in = new FileInputStream("app.properties")) {
+            Properties prop = new Properties();
+            prop.load(in);
+            try (TableEditor tableEditor = new TableEditor(prop)) {
 
-        tableEditor.createTable("store");
-        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+                tableEditor.createTable("store");
+                System.out.println(getTableScheme(tableEditor.connection, "store"));
 
-        tableEditor.addColumn("store", "engine", "varchar");
-        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+                tableEditor.addColumn("store", "engine", "varchar");
+                System.out.println(getTableScheme(tableEditor.connection, "store"));
 
-        tableEditor.addColumn("store", "gear", "varchar");
-        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+                tableEditor.addColumn("store", "gear", "varchar");
+                System.out.println(getTableScheme(tableEditor.connection, "store"));
 
-        tableEditor.renameColumn("store", "gear", "transmission");
-        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+                tableEditor.renameColumn("store", "gear", "transmission");
+                System.out.println(getTableScheme(tableEditor.connection, "store"));
 
-        tableEditor.dropColumn("store", "engine");
-        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+                tableEditor.dropColumn("store", "engine");
+                System.out.println(getTableScheme(tableEditor.connection, "store"));
 
-        tableEditor.dropTable("store");
-
-        tableEditor.close();
+                tableEditor.dropTable("store");
+            }
+        }
     }
 
     public void changeTable(String sql) throws Exception {
-        try (Connection connection = getConnection()) {
-            try (Statement statement = connection.createStatement()) {
-                statement.execute(sql);
-            }
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(sql);
         }
     }
 
