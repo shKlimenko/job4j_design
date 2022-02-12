@@ -1,4 +1,4 @@
-package sql;
+package jdbc;
 
 import io.Config;
 import java.sql.Connection;

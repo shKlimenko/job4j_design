@@ -1,9 +1,7 @@
 package jdbc;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.FileInputStream;
+import java.sql.*;
 import java.util.Properties;
 import java.util.StringJoiner;
 
@@ -11,6 +9,14 @@ public class TableEditor implements AutoCloseable {
 
     private Connection connection;
     private Properties properties;
+
+    private static Connection getConnection() throws Exception {
+        Class.forName("org.postgresql.Driver");
+        String url = "jdbc:postgresql://localhost:5432/idea_db";
+        String login = "postgres";
+        String password = "password";
+        return DriverManager.getConnection(url, login, password);
+    }
 
     public TableEditor(Properties properties) {
         this.properties = properties;
@@ -21,7 +27,25 @@ public class TableEditor implements AutoCloseable {
         connection = null;
     }
 
-    public void createTable(String tableName) {
+    public static void main(String[] args) throws Exception {
+        Properties prop = new Properties();
+        prop.load(new FileInputStream("app.properties"));
+        TableEditor tableEditor = new TableEditor(prop);
+
+        tableEditor.createTable("store");
+
+    }
+
+    public void createTable(String tableName) throws Exception {
+        try (Connection connection = getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                String sql = String.format(
+                        "create table if not exists %s();", tableName
+                );
+                statement.execute(sql);
+                System.out.println(getTableScheme(connection, tableName));
+            }
+        }
     }
 
     public void dropTable(String tableName) {
