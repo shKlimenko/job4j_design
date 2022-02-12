@@ -10,11 +10,11 @@ public class TableEditor implements AutoCloseable {
     private Connection connection;
     private Properties properties;
 
-    private static Connection getConnection() throws Exception {
-        Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://localhost:5432/idea_db";
-        String login = "postgres";
-        String password = "password";
+    private Connection getConnection() throws Exception {
+        Class.forName(this.properties.getProperty("hibernate.connection.driver_class"));
+        String url = this.properties.getProperty("hibernate.connection.url");
+        String login = this.properties.getProperty("hibernate.connection.username");
+        String password = this.properties.getProperty("hibernate.connection.password");
         return DriverManager.getConnection(url, login, password);
     }
 
@@ -33,31 +33,61 @@ public class TableEditor implements AutoCloseable {
         TableEditor tableEditor = new TableEditor(prop);
 
         tableEditor.createTable("store");
+        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
 
+        tableEditor.addColumn("store", "engine", "varchar");
+        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+
+        tableEditor.addColumn("store", "gear", "varchar");
+        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+
+        tableEditor.renameColumn("store", "gear", "transmission");
+        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+
+        tableEditor.dropColumn("store", "engine");
+        System.out.println(getTableScheme(tableEditor.getConnection(), "store"));
+
+        tableEditor.dropTable("store");
+
+        tableEditor.close();
     }
 
-    public void createTable(String tableName) throws Exception {
+    public void changeTable(String sql) throws Exception {
         try (Connection connection = getConnection()) {
             try (Statement statement = connection.createStatement()) {
-                String sql = String.format(
-                        "create table if not exists %s();", tableName
-                );
                 statement.execute(sql);
-                System.out.println(getTableScheme(connection, tableName));
             }
         }
     }
 
-    public void dropTable(String tableName) {
+    public void createTable(String tableName) throws Exception {
+        changeTable(String.format(
+                "create table if not exists %s();", tableName
+        ));
     }
 
-    public void addColumn(String tableName, String columnName, String type) {
+    public void dropTable(String tableName) throws Exception {
+        changeTable(String.format(
+                "drop table %s;", tableName
+        ));
     }
 
-    public void dropColumn(String tableName, String columnName) {
+    public void addColumn(String tableName, String columnName, String type) throws Exception {
+        changeTable(String.format(
+                "alter table %s add %s %s;", tableName, columnName, type
+        ));
     }
 
-    public void renameColumn(String tableName, String columnName, String newColumnName) {
+    public void dropColumn(String tableName, String columnName) throws Exception {
+        changeTable(String.format(
+                "alter table %s drop column %s;", tableName, columnName
+        ));
+    }
+
+    public void renameColumn(String tableName, String columnName, String newColumnName) throws Exception {
+        changeTable(String.format(
+                "alter table %s rename column %s to %s;", tableName, columnName, newColumnName
+        ));
     }
 
 
