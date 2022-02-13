@@ -24,6 +24,10 @@ public class ImportDB {
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
             rd.lines().forEach(line -> {
                 String[] splittedRdLine = line.split(";");
+                if (splittedRdLine.length != 2 || splittedRdLine[0].isEmpty()) {
+                    throw new IllegalArgumentException(
+                            "Wrong pattern. Use right parameters, etc: name;email;");
+                }
                 User user = new User(splittedRdLine[0], splittedRdLine[1]);
                 users.add(user);
             });
